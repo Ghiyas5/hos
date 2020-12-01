@@ -42,6 +42,7 @@ dependencies:
   intl: ^0.16.1
   pdf: ^1.12.0
   cached_network_image: ^2.3.3
+  pie_chart: ^4.0.1
 
 
 dev_dependencies:

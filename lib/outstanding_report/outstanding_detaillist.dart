@@ -7,17 +7,16 @@ import 'package:toast/toast.dart';
 import 'dart:async';
 import 'dart:convert';
 
-
-class ExpensesDetailList extends StatefulWidget {
+class OutstandingDetailList extends StatefulWidget {
   final String dateFrom,dateTo;
 
-  ExpensesDetailList({this.dateFrom, this.dateTo});
+  OutstandingDetailList({this.dateFrom, this.dateTo});
 
   @override
-  _ExpensesDetailListState createState() => _ExpensesDetailListState();
+  _OutstandingDetailListState createState() => _OutstandingDetailListState();
 }
 
-class _ExpensesDetailListState extends State<ExpensesDetailList> {
+class _OutstandingDetailListState extends State<OutstandingDetailList> {
   String date_f, date_to;
   List detail = List()  ;
   List temp = List();
@@ -43,7 +42,7 @@ class _ExpensesDetailListState extends State<ExpensesDetailList> {
     await http.get('http://192.168.10.50:8081/api/Account/Expenses?Fromdate=$date_f&ToDate=$date_to');
     if (response.statusCode == 200) {
       Map jsonData = json.decode(response.body) ;
-       List az = jsonData['expenseTotal'] ;
+      List az = jsonData['expenseTotal'] ;
       List as = jsonData['expenseReport'];
       Toast.show(  as.toString(), context, duration: Toast.LENGTH_SHORT, gravity:  Toast.BOTTOM);
 
@@ -94,7 +93,6 @@ class _ExpensesDetailListState extends State<ExpensesDetailList> {
 
 
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -155,7 +153,7 @@ class _ExpensesDetailListState extends State<ExpensesDetailList> {
                     return Container(
                       height: orientation == Orientation.portrait?size.height*0.15:size.height*0.30,
 
-                        width: MediaQuery.of(context).size.width,
+                      width: MediaQuery.of(context).size.width,
                       child: Padding(
                         padding: const EdgeInsets.all(8.0),
                         child: Card(
@@ -166,8 +164,8 @@ class _ExpensesDetailListState extends State<ExpensesDetailList> {
                               children: <Widget>[
                                 Row(
 
-                                 // mainAxisAlignment: MainAxisAlignment.start,
-                                //  crossAxisAlignment: CrossAxisAlignment.center,
+                                  // mainAxisAlignment: MainAxisAlignment.start,
+                                  //  crossAxisAlignment: CrossAxisAlignment.center,
                                   children: <Widget>[
                                     Flexible(
                                       flex: 1,
@@ -177,7 +175,7 @@ class _ExpensesDetailListState extends State<ExpensesDetailList> {
                                         children: <Widget>[
                                           Flexible(flex:1,child: SizedBox(child: Text((temp[index]['vcH_DCOA_CODE']),style: TextStyle(color: Colors.black),))),
                                           Flexible(flex:1,child: SizedBox(child: Text((temp[index]['acC_COA_DESC']),overflow: TextOverflow.clip,maxLines: 3,style: TextStyle(color: Colors.green),))),
-                                         // SizedBox(width: 25,),
+                                          // SizedBox(width: 25,),
                                           Flexible(flex:1,child: SizedBox(child: Text((temp[index]['total']),style: TextStyle(color: Colors.amber),))),
                                         ],
                                       ),
