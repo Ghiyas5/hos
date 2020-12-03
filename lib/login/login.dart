@@ -357,7 +357,7 @@ class _loginState extends State<login> with TickerProviderStateMixin  {
     ip = prefs.getString("ip_address");
     print('ip'+ ip + port);
 
-
+//
     _sKey.currentState.showSnackBar(new SnackBar(content: new Text(ip+'or'+port) ));
 
   }

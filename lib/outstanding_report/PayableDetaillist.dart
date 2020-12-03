@@ -9,13 +9,12 @@ import 'dart:convert';
 
 import 'outing_ledgerdetail.dart';
 
-class OutstandingDetailList extends StatefulWidget {
-
+class PayableDetaillist extends StatefulWidget {
   @override
-  _OutstandingDetailListState createState() => _OutstandingDetailListState();
+  _PayableDetaillistState createState() => _PayableDetaillistState();
 }
 
-class _OutstandingDetailListState extends State<OutstandingDetailList> {
+class _PayableDetaillistState extends State<PayableDetaillist> {
 
   List detail = List()  ;
   List temp = List();
@@ -36,46 +35,46 @@ class _OutstandingDetailListState extends State<OutstandingDetailList> {
       isLoading = true;
     });
     // 182.176.127.47:8082
-    final response =
-    await http.get('http://192.168.10.50:8081/api/Account/Receiveable');
-    if (response.statusCode == 200) {
-      Map jsonData = json.decode(response.body) ;
-      List az = jsonData['totalBalance'] ;
-      List as = jsonData['receivables'];
-      Toast.show(  as.toString(), context, duration: Toast.LENGTH_SHORT, gravity:  Toast.BOTTOM);
+      final response =
+      await http.get('http://192.168.10.50:8081/api/Account/Payable');
+      if (response.statusCode == 200) {
+        Map jsonData = json.decode(response.body) ;
+        List az = jsonData['totalBal'] ;
+        List as = jsonData['payableReport'];
+        Toast.show(  as.toString(), context, duration: Toast.LENGTH_SHORT, gravity:  Toast.BOTTOM);
 
-      if(az.isEmpty){
-        Toast.show( 'Data Not Found.', context, duration: Toast.LENGTH_SHORT, gravity:  Toast.BOTTOM);
-      }
-      else{
-        for(int i = 0; i<az.length; i++){
-          detail.add(as[i]);
-
+        if(az.isEmpty){
+          Toast.show( 'Data Not Found.', context, duration: Toast.LENGTH_SHORT, gravity:  Toast.BOTTOM);
         }
-      }
+        else{
+          for(int i = 0; i<az.length; i++){
+            detail.add(as[i]);
 
-      if(as.isEmpty){
-        Toast.show( 'Data Not Found.', context, duration: Toast.LENGTH_SHORT, gravity:  Toast.BOTTOM);
-      }
-      else{
-        for(int i = 0; i<as.length; i++){
-          temp.add(as[i]);
-
+          }
         }
+
+        if(as.isEmpty){
+          Toast.show( 'Data Not Found.', context, duration: Toast.LENGTH_SHORT, gravity:  Toast.BOTTOM);
+        }
+        else{
+          for(int i = 0; i<as.length; i++){
+            temp.add(as[i]);
+
+          }
+        }
+
+        //  for (final name in jsonDat.length) {
+        //    final value = jsonDat[name];
+        //    print('$name,$value'); // prints entries like "AED,3.672940"
+        //  }
+
+        setState(() {
+
+          isLoading = false;
+        });
+      } else {
+        throw Exception('Failed to load data');
       }
-
-      //  for (final name in jsonDat.length) {
-      //    final value = jsonDat[name];
-      //    print('$name,$value'); // prints entries like "AED,3.672940"
-      //  }
-
-      setState(() {
-
-        isLoading = false;
-      });
-    } else {
-      throw Exception('Failed to load data');
-    }
 
 
   }
@@ -102,7 +101,7 @@ class _OutstandingDetailListState extends State<OutstandingDetailList> {
       body: Column(
         children: [
           Flexible(
-            flex: 1,
+
             child: Container(
               height: 120,
               width:  size.width,
@@ -119,7 +118,7 @@ class _OutstandingDetailListState extends State<OutstandingDetailList> {
                     Padding(
                       padding: const EdgeInsets.all(12.0),
                       child: SizedBox(
-                        child:  Text('Receiveable Detail Report',
+                        child:  Text('Payable Detail Report',
                           style: TextStyle(color: Colors.white,
                             fontSize: 22,
                             fontWeight: FontWeight.bold,
@@ -136,21 +135,21 @@ class _OutstandingDetailListState extends State<OutstandingDetailList> {
 
             ),
           ),
-
           SizedBox(height: 15,),
           Row(
+
             // mainAxisAlignment: MainAxisAlignment.start,
             //  crossAxisAlignment: CrossAxisAlignment.center,
             children: <Widget>[
               Flexible(
-
+                flex: 1,
                 child: Row(
 
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: <Widget>[
-                    SizedBox(child: FittedBox(fit:BoxFit.fitWidth,child: Text(('Account'),style: TextStyle(color: Colors.amber),))),
-                    SizedBox(child: FittedBox(fit:BoxFit.fitWidth,child: Text(('Name'),overflow: TextOverflow.clip,maxLines: 3,style: TextStyle(color: Colors.black,),))),
-                    SizedBox(child: FittedBox(fit:BoxFit.fitWidth,child: Text(('Balance'), style: TextStyle(color: Colors.green),))),
+                    Flexible(flex:1,child: SizedBox(child: FittedBox(fit:BoxFit.fitWidth,child: Text(('Account'),style: TextStyle(color: Colors.amber),)))),
+                    Flexible(flex:1,child: SizedBox(child: FittedBox(fit:BoxFit.fitWidth,child: Text(('Name'),overflow: TextOverflow.clip,maxLines: 3,style: TextStyle(color: Colors.black,),)))),
+                    Flexible(flex:1,child: SizedBox(child: FittedBox(fit:BoxFit.fitWidth,child: Text(('Balance'), style: TextStyle(color: Colors.green),)))),
                     // SizedBox(width: 25,),
 
 
@@ -174,11 +173,12 @@ class _OutstandingDetailListState extends State<OutstandingDetailList> {
                   itemCount: temp.length,
                   itemBuilder: (BuildContext context, int index) {
                     return GestureDetector(
+
                       onTap: (){
-                        Navigator.push(context, MaterialPageRoute(builder: (context) => OutingstandingLedger(
-                          acc_no:  (temp[index]['ldG_AC_CODE']),
-                        ),));
-                      },
+                      Navigator.push(context, MaterialPageRoute(builder: (context) => OutingstandingLedger(
+                        acc_no:  (temp[index]['ldG_AC_CODE']),
+                      ),));
+                    },
                       child: Container(
                         height: orientation == Orientation.portrait?size.height*0.15:size.height*0.30,
 
@@ -192,10 +192,8 @@ class _OutstandingDetailListState extends State<OutstandingDetailList> {
                                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                                 children: <Widget>[
                                   Flexible(flex:1,child: SizedBox(child: FittedBox(fit:BoxFit.fitWidth,child: Text((temp[index]['ldG_AC_CODE']),style: TextStyle(color: Colors.amber),)))),
-                                  Flexible(flex:1,child: SizedBox(child: FittedBox(fit:BoxFit.fitWidth,child: Text((temp[index]['cuS_NAME']),overflow: TextOverflow.clip,maxLines: 3,style: TextStyle(color: Colors.black,),)))),
+                                  Flexible(flex:1,child: SizedBox(child: FittedBox(fit:BoxFit.fitWidth,child: Text((temp[index]['suP_NAME']),overflow: TextOverflow.clip,maxLines: 3,style: TextStyle(color: Colors.black,),)))),
                                   Flexible(flex:1,child: SizedBox(child: FittedBox(fit:BoxFit.fitWidth,child: Text((temp[index]['balance']), style: TextStyle(color: Colors.green),)))),
-                                  // SizedBox(width: 25,),
-
 
                                 ],
                               ),

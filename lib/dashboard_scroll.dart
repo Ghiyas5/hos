@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:hos/outstanding_report/outingstang_report.dart';
+import 'expense_report/expense_report.dart';
 import 'file:///E:/ERS_Projects/hos/lib/sale_report/sales_report.dart';
 import 'package:hos/purchase_report/purchase_report.dart';
 import 'package:hos/stock_report/stock_report.dart';
@@ -134,7 +136,8 @@ class _scrollState extends State<scroll> {
                   height: 130,
                   decoration: BoxDecoration(color: Colors.transparent),
                   child: InkWell(
-                    onTap: (){},
+                    onTap: (){  Navigator.push(context, MaterialPageRoute(builder: (context) => ExpenseReport(),));
+                    },
                     child: Card(
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(15.0),
@@ -169,7 +172,9 @@ class _scrollState extends State<scroll> {
                   height: 130,
                   decoration: BoxDecoration(color: Colors.transparent),
                   child: InkWell(
-                    onTap: (){},
+                    onTap: (){
+                       Navigator.push(context, MaterialPageRoute(builder: (context) => OutstandingReport(),));
+                    },
                     child: Card(
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(15.0),
