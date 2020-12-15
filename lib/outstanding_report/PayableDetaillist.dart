@@ -41,7 +41,7 @@ class _PayableDetaillistState extends State<PayableDetaillist> {
         Map jsonData = json.decode(response.body) ;
         List az = jsonData['totalBal'] ;
         List as = jsonData['payableReport'];
-        Toast.show(  as.toString(), context, duration: Toast.LENGTH_SHORT, gravity:  Toast.BOTTOM);
+       // Toast.show(  as.toString(), context, duration: Toast.LENGTH_SHORT, gravity:  Toast.BOTTOM);
 
         if(az.isEmpty){
           Toast.show( 'Data Not Found.', context, duration: Toast.LENGTH_SHORT, gravity:  Toast.BOTTOM);
@@ -103,7 +103,7 @@ class _PayableDetaillistState extends State<PayableDetaillist> {
           Flexible(
 
             child: Container(
-              height: 120,
+              height: orientation == Orientation.portrait?size.height*0.14:size.height*0.28,
               width:  size.width,
               decoration: BoxDecoration(
                 color: Colors.green,

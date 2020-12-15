@@ -63,6 +63,26 @@ class _DashboardState extends State<Dashboard> with TickerProviderStateMixin{
       // mask:  Scaffold(
       //   backgroundColor: Colors.white,
       // ),
+      // controller: controller,
+
+      // mask:  Scaffold(
+      //   backgroundColor: Colors.white,
+      // ),
+      // appBar: PreferredSize(
+      //   preferredSize: Size.fromHeight(70),
+      //   child: AppBar(
+      //     centerTitle: true,
+      //     title: Text('Dashboard',
+      //       style: TextStyle(color: Colors.white, fontSize: 22, fontWeight: FontWeight.bold,
+      //     ),
+      //     ),
+      //     shape: RoundedRectangleBorder(
+      //       borderRadius: BorderRadius.only(topLeft: const Radius.circular(0.0),bottomLeft: const Radius.circular(70.0)),
+      //     ),
+      //
+      //
+      //       ),
+      //     ),
       body:  SafeArea(
         child: Column(
           children: <Widget>[
