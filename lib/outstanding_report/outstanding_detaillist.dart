@@ -42,7 +42,7 @@ class _OutstandingDetailListState extends State<OutstandingDetailList> {
       Map jsonData = json.decode(response.body) ;
       List az = jsonData['totalBalance'] ;
       List as = jsonData['receivables'];
-      Toast.show(  as.toString(), context, duration: Toast.LENGTH_SHORT, gravity:  Toast.BOTTOM);
+     // Toast.show(  as.toString(), context, duration: Toast.LENGTH_SHORT, gravity:  Toast.BOTTOM);
 
       if(az.isEmpty){
         Toast.show( 'Data Not Found.', context, duration: Toast.LENGTH_SHORT, gravity:  Toast.BOTTOM);
@@ -104,7 +104,7 @@ class _OutstandingDetailListState extends State<OutstandingDetailList> {
           Flexible(
             flex: 1,
             child: Container(
-              height: 120,
+              height: orientation == Orientation.portrait?size.height*0.14:size.height*0.28,
               width:  size.width,
               decoration: BoxDecoration(
                 color: Colors.green,

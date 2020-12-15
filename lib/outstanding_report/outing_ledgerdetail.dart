@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:hos/sale_report/sale_details.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -6,6 +8,14 @@ import 'package:intl/intl.dart';
 import 'package:toast/toast.dart';
 import 'dart:async';
 import 'dart:convert';
+import 'package:path_provider/path_provider.dart';
+import 'package:pdf/pdf.dart';
+import 'package:pdf/widgets.dart' as pw;
+
+import 'package:graphview/GraphView.dart';
+
+import '../pdfview.dart';
+
 
 class OutingstandingLedger extends StatefulWidget {
   String acc_no;
@@ -26,6 +36,9 @@ class _OutingstandingLedgerState extends State<OutingstandingLedger> {
   // SalesData salesData;
   var isLoading = false;
   String  port,ip;
+  String ac;
+  final pdf = pw.Document();
+  final _sKey = GlobalKey<ScaffoldState>();
 
   Future<void> getFromSP() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -56,11 +69,11 @@ class _OutingstandingLedgerState extends State<OutingstandingLedger> {
           netBalance = NetBalance(ldG_CREDIT: az[i]['ldG_CREDIT'].toString(),
               ldG_DEBIT: az[i]['ldG_DEBIT'].toString(),balance: az[i]['balance'].toString());
           detail.add(netBalance);
-          bal = detail[i].balance;
-          crd = detail[i].ldG_CREDIT;
-          deb = detail[i].ldG_DEBIT;
-
-          Toast.show(  detail[i].ldG_CREDIT, context, duration: Toast.LENGTH_SHORT, gravity:  Toast.BOTTOM);
+          bal = detail[i].balance == ''?'null':detail[i].balance;
+          crd = detail[i].ldG_CREDIT== ''?'null':detail[i].ldG_CREDIT;
+          deb = detail[i].ldG_DEBIT== ''?'null':detail[i].ldG_DEBIT;
+           ac = bal;
+         // Toast.show(  bal, context, duration: Toast.LENGTH_SHORT, gravity:  Toast.BOTTOM);
 
         }
       }
@@ -89,35 +102,128 @@ class _OutingstandingLedgerState extends State<OutingstandingLedger> {
     } else {
       throw Exception('Failed to load data');
     }
-
-
   }
-
 
   @override
   void initState() {
-    super.initState();
     getFromSP();
     ac_no = widget.acc_no;
-
-    // Toast.show( date_to+date_f+item_cod+cust_cod, context, duration: Toast.LENGTH_SHORT, gravity:  Toast.BOTTOM);
     _fetchData();
+    super.initState();
 
+
+     //Toast.show(  '$bal', context, duration: Toast.LENGTH_SHORT, gravity:  Toast.BOTTOM);
+
+    // final Node node1 = Node(SizedBox(child: Text('Rs: $ac',style: TextStyle(color: Colors.amber),),));
+    // final Node node2 = Node(getNodeText());
+    // final Node node3 = Node(getNodeText());
+    //
+    // graph.addEdge(node1, node2);
+    // graph.addEdge(node1, node3);
+    //
+    // builder
+    //   ..siblingSeparation = (70)
+    //   ..levelSeparation = (20)
+    //   ..subtreeSeparation = (20)
+    //   ..orientation = (BuchheimWalkerConfiguration.ORIENTATION_TOP_BOTTOM);
+  }
+
+  // Widget getNodeText() {
+  //
+  //   return Container(
+  //     child: Column(
+  //       children: [
+  //         SizedBox(child: Text('Net Balance',style: TextStyle(color: Colors.black),)),
+  //         SizedBox(height: 5,),
+  //         SizedBox(child: Text('$bal',style: TextStyle(color: Colors.amber),),),
+  //       ],
+  //     ),
+  //   );
+  //   // return Container(
+  //   //     padding: EdgeInsets.all(16),
+  //   //     decoration: BoxDecoration(
+  //   //       borderRadius: BorderRadius.circular(4),
+  //   //       boxShadow: [
+  //   //         BoxShadow(color: Colors.blue[100], spreadRadius: 1),
+  //   //       ],
+  //   //     ),
+  //   //     child: Text('abc'));
+  // }
+  // final Graph graph = Graph();
+  // BuchheimWalkerConfiguration builder = BuchheimWalkerConfiguration();
+
+  writeonpdf(){
+    pdf.addPage(
+      pw.MultiPage(
+        //pageFormat: PdfPageFormat.a5,
+        //margin: pw.EdgeInsets.all(32),
+        build: (pw.Context context){
+          return<pw.Widget>[
+
+            pw. Flexible(
+
+              flex: 1,   //orientation == Orientation.portrait?1:3,
+              child: pw.Container(
+                height: 100 ,// orientation == Orientation.portrait?size.height*0.14:size.height*0.28,
+                width:   20,
+                decoration: pw.BoxDecoration(
+                  color: PdfColors.green,
+                 // borderRadius: pw.BorderRadius.only(topLeft: const Radius.circular(0.0),bottomLeft: const Radius.circular(100.0)),
+                ),
+                child: pw.Row(
+                  mainAxisAlignment: pw.MainAxisAlignment.center,
+                  crossAxisAlignment: pw.CrossAxisAlignment.end,
+                  children: <pw.Widget>[
+                    pw.Padding(
+                      padding: const pw.EdgeInsets.all(12.0),
+                      child: pw.SizedBox(
+                        child:  pw.Text('Ledger Report',
+                          style: pw.TextStyle(color: PdfColors.white,
+                            fontSize: 22,
+                            fontWeight: pw.FontWeight.bold,
+                          ),
+
+                        ),
+
+                      ),
+                    ),
+
+                  ],
+                ),
+
+              ),
+            ),
+          ];
+        },
+      )
+    );
+  }
+  Future savePdf() async{
+    Directory documentDirectory = await getApplicationDocumentsDirectory();
+
+    String documentPath = documentDirectory.path;
+
+    File file = File("$documentPath/example.pdf");
+
+    file.writeAsBytesSync(pdf.save());
+    Toast.show( 'Data Save.', context, duration: Toast.LENGTH_SHORT, gravity:  Toast.BOTTOM);
 
   }
+
 
   @override
   Widget build(BuildContext context) {
     Orientation orientation = MediaQuery.of(context).orientation;
     Size size = MediaQuery.of(context).size;
     return Scaffold(
-
+         key: _sKey,
       body: Column(
         children: [
           Flexible(
 
+            flex:  orientation == Orientation.portrait?1:3,
             child: Container(
-              height: 120,
+              height: orientation == Orientation.portrait?size.height*0.14:size.height*0.28,
               width:  size.width,
               decoration: BoxDecoration(
                 color: Colors.green,
@@ -152,30 +258,56 @@ class _OutingstandingLedgerState extends State<OutingstandingLedger> {
 
           Column(
             mainAxisAlignment: MainAxisAlignment.center,
+
             children: [
+
+
+              // GraphView(
+              //
+              //   graph: graph,
+              //   algorithm: BuchheimWalkerAlgorithm(builder,null),
+              // ),
+
               SizedBox(height: 15,),
               SizedBox(child: Text('Net Balance',style: TextStyle(color: Colors.black),)),
               SizedBox(height: 5,),
-              SizedBox(child: Text(bal,style: TextStyle(color: Colors.amber),),),
+              SizedBox(child: Text('Rs: $bal',style: TextStyle(color: Colors.amber),),),
 
-              SizedBox(child: Text('_____________|_____________',style: TextStyle(color: Colors.black),),),
-              SizedBox(height: 20,child: Container(decoration: BoxDecoration(color: Colors.black),),),
+              SizedBox(child: Text('______________|______________',style: TextStyle(color: Colors.black,fontSize: orientation == Orientation.portrait?14:26,),),),
+
 
               Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
-                  //SizedBox(child: Text(deb,style: TextStyle(color: Colors.green),),),
-                  //SizedBox(child: Text(crd,style: TextStyle(color: Colors.red),),),
+                  SizedBox(height: orientation == Orientation.portrait?14:20,width:orientation == Orientation.portrait?1:2,child: Container(decoration: BoxDecoration(color: Colors.black),),),
+                  SizedBox(height: orientation == Orientation.portrait?14:20,width:orientation == Orientation.portrait?1:2,child: Container(decoration: BoxDecoration(color: Colors.black),),),
                 ],
               ),
 
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: [
+                  SizedBox(child: Text('Debit',style: TextStyle(color: Colors.black),)),
+                  SizedBox(child: Text('Credit',style: TextStyle(color: Colors.black),)),
+                ],
+              ),
+              SizedBox(height: 5,),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+
+                children: [
+
+                  SizedBox(child: Text('Rs: $deb',style: TextStyle(color: Colors.green),)),
+                  SizedBox(child: Text('Rs: $crd',style: TextStyle(color: Colors.red),)),
+                ],
+              ),
             ],
           ),
-          SizedBox(height: 15,),
+          SizedBox(height: 20,),
           Row(
             children: <Widget>[
               Flexible(
-                flex: 1,
+
                 child: Row(
 
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -205,51 +337,43 @@ class _OutingstandingLedgerState extends State<OutingstandingLedger> {
                   : ListView.builder(
                   itemCount: temp.length,
                   itemBuilder: (BuildContext context, int index) {
-                    return GestureDetector(
+                    return Container(
+                      height: orientation == Orientation.portrait?size.height*0.15:size.height*0.30,
 
-                      onTap: (){
-                        Navigator.push(context, MaterialPageRoute(builder: (context) => OutingstandingLedger(
-                          acc_no:  (temp[index]['ldG_AC_CODE']),
-                        ),));
-                      },
-                      child: Container(
-                        height: orientation == Orientation.portrait?size.height*0.15:size.height*0.30,
+                      width: MediaQuery.of(context).size.width,
+                      child: Card(
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: <Widget>[
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                              children: <Widget>[
+                                Flexible(flex:1,child: SizedBox(child: FittedBox(fit:BoxFit.fitWidth,child: Text((temp[index]['date']==''?'null':temp[index]['date']),style: TextStyle(color: Colors.amber),)))),
+                                Flexible(flex:1,child: SizedBox(child: FittedBox(fit:BoxFit.fitWidth,child: Text((temp[index]['chQ_NO']==''?'null':temp[index]['chQ_NO']),overflow: TextOverflow.clip,maxLines: 3,style: TextStyle(color: Colors.black,),)))),
+                                Flexible(flex:1,child: SizedBox(child: FittedBox(fit:BoxFit.fitWidth,child: Text((temp[index]['debit']== ''?'null':temp[index]['debit']), style: TextStyle(color: Colors.green),)))),
+                                Flexible(flex:1,child: SizedBox(child: FittedBox(fit:BoxFit.fitWidth,child: Text((temp[index]['credit']== ''?'null':temp[index]['credit']), style: TextStyle(color: Colors.red),)))),
+                                Flexible(flex:1,child: SizedBox(child: FittedBox(fit:BoxFit.fitWidth,child: Text((temp[index]['balance']== ''?'null':temp[index]['balance']), style: TextStyle(color: Colors.orange),)))),
 
-                        width: MediaQuery.of(context).size.width,
-                        child: Card(
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                            children: <Widget>[
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                                children: <Widget>[
-                                  Flexible(flex:1,child: SizedBox(child: FittedBox(fit:BoxFit.fitWidth,child: Text((temp[index]['date']),style: TextStyle(color: Colors.amber),)))),
-                                  Flexible(flex:1,child: SizedBox(child: FittedBox(fit:BoxFit.fitWidth,child: Text((temp[index]['chQ_NO']==''?'null':temp[index]['chQ_NO']),overflow: TextOverflow.clip,maxLines: 3,style: TextStyle(color: Colors.black,),)))),
-                                  Flexible(flex:1,child: SizedBox(child: FittedBox(fit:BoxFit.fitWidth,child: Text((temp[index]['debit']), style: TextStyle(color: Colors.green),)))),
-                                  Flexible(flex:1,child: SizedBox(child: FittedBox(fit:BoxFit.fitWidth,child: Text((temp[index]['credit']), style: TextStyle(color: Colors.red),)))),
-                                  Flexible(flex:1,child: SizedBox(child: FittedBox(fit:BoxFit.fitWidth,child: Text((temp[index]['balance']), style: TextStyle(color: Colors.orange),)))),
+                              ],
+                            ),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                              children: [
+                                Flexible(flex:1,child: SizedBox(child: FittedBox(fit:BoxFit.fitWidth,child: Text('Vch Code', style: TextStyle(color: Colors.black),)))),
+                                Flexible(flex:2,child: SizedBox(child: FittedBox(fit:BoxFit.fitWidth,child: Text((temp[index]['voucheR_CODE']== ''?'null':temp[index]['voucheR_CODE']), style: TextStyle(color: Colors.grey),)))),
 
-                                ],
-                              ),
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                                children: [
-                                  Flexible(flex:1,child: SizedBox(child: FittedBox(fit:BoxFit.fitWidth,child: Text('Vch Code', style: TextStyle(color: Colors.black),)))),
-                                  Flexible(flex:2,child: SizedBox(child: FittedBox(fit:BoxFit.fitWidth,child: Text((temp[index]['voucheR_CODE']), style: TextStyle(color: Colors.grey),)))),
+                              ],
+                            ),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                              children: [
+                                Flexible(flex:1,child: SizedBox(child: FittedBox(fit:BoxFit.fitWidth,child: Text('Remarks', style: TextStyle(color: Colors.black),)))),
+                                Flexible(flex:2,child: SizedBox(child: FittedBox(fit:BoxFit.fitWidth,child: Text((temp[index]['vcH_NARR']== ''?'null':temp[index]['vcH_NARR']), style: TextStyle(color: Colors.grey),)))),
 
-                                ],
-                              ),
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                                children: [
-                                  Flexible(flex:1,child: SizedBox(child: FittedBox(fit:BoxFit.fitWidth,child: Text('Remarks', style: TextStyle(color: Colors.black),)))),
-                                  Flexible(flex:2,child: SizedBox(child: FittedBox(fit:BoxFit.fitWidth,child: Text((temp[index]['vcH_NARR']), style: TextStyle(color: Colors.grey),)))),
+                              ],
+                            )
 
-                                ],
-                              )
-
-                            ],
-                          ),
+                          ],
                         ),
                       ),
                     );
@@ -262,6 +386,26 @@ class _OutingstandingLedgerState extends State<OutingstandingLedger> {
                     // );
                   }),
             ),
+          ),
+
+          FloatingActionButton(
+
+            onPressed: ()async{
+              writeonpdf();
+              await savePdf();
+
+              Directory documentDirectory = await getApplicationDocumentsDirectory();
+
+              String documentPath = documentDirectory.path;
+
+              String fullPath = "$documentPath/example.pdf";
+
+              Navigator.push(context, MaterialPageRoute(
+                  builder: (context) => PdfPreviewScreen(path: fullPath,)
+              ));
+
+            },
+            child: Icon(Icons.save),
           ),
         ],
       ),

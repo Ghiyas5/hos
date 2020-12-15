@@ -91,6 +91,8 @@ class _Detail_ListState extends State<Detail_List> {
 
     @override
   Widget build(BuildContext context) {
+      Orientation orientation = MediaQuery.of(context).orientation;
+      Size size = MediaQuery.of(context).size;
     return Scaffold(
 
         body: Column(
@@ -98,7 +100,7 @@ class _Detail_ListState extends State<Detail_List> {
             Flexible(
               flex: 1,
               child: Container(
-                height: 120,
+                height: orientation == Orientation.portrait?size.height*0.14:size.height*0.28,
                 width: MediaQuery.of(context).size.width,
                 decoration: BoxDecoration(
                   color: Colors.green,
