@@ -105,122 +105,120 @@ class _OutstandingReportState extends State<OutstandingReport> {
   Widget build(BuildContext context) {
     Orientation orientation = MediaQuery.of(context).orientation;
     Size size = MediaQuery.of(context).size;
-    return SafeArea(
-      child: Scaffold(
-        body: Container(
-          height: size.height,
-          width: size.width,
-          child: Column(
-            children: [
-              Align(
-                alignment: Alignment.topCenter,
-                child: Container(
-                  height: orientation == Orientation.portrait?size.height*0.13:size.height*0.26,
-                  width:  size.width,
-                  decoration: BoxDecoration(
-                    color: Colors.green,
-                    borderRadius: BorderRadius.only(topLeft: const Radius.circular(0.0),bottomLeft: const Radius.circular(100.0)),
-                  ),
-                  child: Padding(
-                    padding: const EdgeInsets.fromLTRB(0, 0, 0, 0),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.end,
-                      children: <Widget>[
-                        Padding(
-                          padding: const EdgeInsets.all(12.0),
-                          child: SizedBox(
-                            child:  Text('Detail Report',
-                              style: TextStyle(color: Colors.white,
-                                fontSize: 22,
-                                fontWeight: FontWeight.bold,
-                              ),
-
-                            ),
-
-                          ),
-                        ),
-
-                      ],
-                    ),
-                  ),
-
+    return Scaffold(
+      body: Container(
+        height: size.height,
+        width: size.width,
+        child: Column(
+          children: [
+            Align(
+              alignment: Alignment.topCenter,
+              child: Container(
+                height: orientation == Orientation.portrait?size.height*0.13:size.height*0.26,
+                width:  size.width,
+                decoration: BoxDecoration(
+                  color: Colors.green,
+                  borderRadius: BorderRadius.only(topLeft: const Radius.circular(0.0),bottomLeft: const Radius.circular(100.0)),
                 ),
-              ),
-              Expanded(
-                child: Align(
-                  alignment: Alignment.bottomCenter,
-                  child: Padding(
-                    padding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
-                    child: Row(
-                      children: [
-                        Expanded(
-                          flex: 1,
-                          child: GestureDetector(
-                            onTap: (){
-                               Navigator.push(context, MaterialPageRoute(builder: (context) => PayableDetaillist(),));
-                            },
-                            child: Container(
-
-                              height: orientation == Orientation.portrait?size.height*0.07:size.height*0.14,
-                              decoration: BoxDecoration(
-                                color: Colors.green,
-                                borderRadius: BorderRadius.only(topLeft: const Radius.circular(50.0),bottomLeft: const Radius.circular(0.0)),
-                              ),
-                              child:  Center(
-                                child: Text('Payable Report',
-                                  style: TextStyle(color: Colors.white,
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-
-                                ),
-                              ),
+                child: Padding(
+                  padding: const EdgeInsets.fromLTRB(0, 0, 0, 0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.end,
+                    children: <Widget>[
+                      Padding(
+                        padding: const EdgeInsets.all(12.0),
+                        child: SizedBox(
+                          child:  Text('Detail Report',
+                            style: TextStyle(color: Colors.white,
+                              fontSize: 22,
+                              fontWeight: FontWeight.bold,
                             ),
-                          ),
-                        ),
-                        SizedBox( child: Text('|',
-                          style: TextStyle(color: Colors.white,
-                            fontSize: 10,
-                            fontWeight: FontWeight.bold,
+
                           ),
 
-                        ),),
-                        Expanded(
-                          flex: 1,
-                          child: GestureDetector(
-                            onTap: (){ Navigator.pop(context);
-                            Navigator.push(context, MaterialPageRoute(builder: (context) => OutstandingDetailList(),));
-                            },
-                            child: Container(
-                              height: orientation == Orientation.portrait?size.height*0.07:size.height*0.14,
-                              decoration: BoxDecoration(
-                                color: Colors.green,
-                                borderRadius: BorderRadius.only(topRight: const Radius.circular(50.0),bottomLeft: const Radius.circular(0.0)),
-                              ),
-                              child:  Center(
-                                child: Text('Receiveable Report',
-                                  style: TextStyle(color: Colors.white,
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-
-                                ),
-                              ),
-                            ),
-                          ),
                         ),
-                      ],
-                    ),
+                      ),
+
+                    ],
                   ),
                 ),
+
               ),
+            ),
+            Expanded(
+              child: Align(
+                alignment: Alignment.bottomCenter,
+                child: Padding(
+                  padding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
+                  child: Row(
+                    children: [
+                      Expanded(
+                        flex: 1,
+                        child: GestureDetector(
+                          onTap: (){
+                             Navigator.push(context, MaterialPageRoute(builder: (context) => PayableDetaillist(),));
+                          },
+                          child: Container(
+
+                            height: orientation == Orientation.portrait?size.height*0.07:size.height*0.14,
+                            decoration: BoxDecoration(
+                              color: Colors.green,
+                              borderRadius: BorderRadius.only(topLeft: const Radius.circular(50.0),bottomLeft: const Radius.circular(0.0)),
+                            ),
+                            child:  Center(
+                              child: Text('Payable Report',
+                                style: TextStyle(color: Colors.white,
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.bold,
+                                ),
+
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                      SizedBox( child: Text('|',
+                        style: TextStyle(color: Colors.white,
+                          fontSize: 10,
+                          fontWeight: FontWeight.bold,
+                        ),
+
+                      ),),
+                      Expanded(
+                        flex: 1,
+                        child: GestureDetector(
+                          onTap: (){ Navigator.pop(context);
+                          Navigator.push(context, MaterialPageRoute(builder: (context) => OutstandingDetailList(),));
+                          },
+                          child: Container(
+                            height: orientation == Orientation.portrait?size.height*0.07:size.height*0.14,
+                            decoration: BoxDecoration(
+                              color: Colors.green,
+                              borderRadius: BorderRadius.only(topRight: const Radius.circular(50.0),bottomLeft: const Radius.circular(0.0)),
+                            ),
+                            child:  Center(
+                              child: Text('Receiveable Report',
+                                style: TextStyle(color: Colors.white,
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.bold,
+                                ),
+
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ),
 
 
 
 
-            ],
-          ),
+          ],
         ),
       ),
     );

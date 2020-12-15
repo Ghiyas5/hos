@@ -34,149 +34,149 @@ class _ExpenseReportState extends State<ExpenseReport> {
 
   @override
   Widget build(BuildContext context) {
+    Orientation orientation = MediaQuery.of(context).orientation;
+    Size size = MediaQuery.of(context).size;
     return Scaffold(
 
       key: _ssKey,
-      body: SafeArea(
-        child: Container(
-          padding: EdgeInsets.all(0.0),
-          child: Column(
-            children: [
-              Flexible(
-                flex: 1,
-                child: Container(
-                  height: MediaQuery.of(context).size.height*0.2,
-                  width: MediaQuery.of(context).size.width,
-                  decoration: BoxDecoration(
-                    color: Colors.green,
-                    borderRadius: BorderRadius.only(topLeft: const Radius.circular(0.0),bottomLeft: const Radius.circular(100.0)),
-                  ),
-                  child: Padding(
-                    padding: const EdgeInsets.fromLTRB(0, 0, 0, 0),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.end,
-                      children: <Widget>[
-                        Padding(
-                          padding: const EdgeInsets.all(12.0),
-                          child: SizedBox(
-                            child:  Text('Stock Report',
-                              style: TextStyle(color: Colors.white,
-                                fontSize: 22,
-                                fontWeight: FontWeight.bold,
-                              ),
-
+      body: Container(
+        padding: EdgeInsets.all(0.0),
+        child: Column(
+          children: [
+            Flexible(
+              flex: 1,
+              child: Container(
+                height: orientation == Orientation.portrait?size.height*0.14:size.height*0.28,
+                width: MediaQuery.of(context).size.width,
+                decoration: BoxDecoration(
+                  color: Colors.green,
+                  borderRadius: BorderRadius.only(topLeft: const Radius.circular(0.0),bottomLeft: const Radius.circular(100.0)),
+                ),
+                child: Padding(
+                  padding: const EdgeInsets.fromLTRB(0, 0, 0, 0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.end,
+                    children: <Widget>[
+                      Padding(
+                        padding: const EdgeInsets.all(12.0),
+                        child: SizedBox(
+                          child:  Text('Expense Report',
+                            style: TextStyle(color: Colors.white,
+                              fontSize: 22,
+                              fontWeight: FontWeight.bold,
                             ),
 
                           ),
-                        ),
 
-                      ],
-                    ),
+                        ),
+                      ),
+
+                    ],
                   ),
-
                 ),
+
               ),
-              SizedBox(height: 35,),
-              Flexible(
-                flex: 4,
-                child: Form(
-                  key: _formKey,
-                  child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.stretch,
-                      children: <Widget>[
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceAround,
-                          children: <Widget>[
-                            GestureDetector(
-                              onTap: () => _fromDate(context),
-                              child: Container(
-                                width: 130,
-                                height: 40,
-                                decoration: BoxDecoration(
-                                  color: Colors.green,
-                                  borderRadius: BorderRadius.circular(10.0),
-                                ),
-                                child:Column(
-                                  children: <Widget>[
-
-                                    SizedBox(
-                                      child: Text('Start Date', style: TextStyle(fontSize: 13, fontWeight: FontWeight.bold,color: Colors.white),),
-                                    ),
-                                    Center(
-                                      child: Text(
-                                        "${selectedFromDate.toLocal()}".split(' ')[0],
-                                        style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold,color: Colors.white),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-
+            ),
+            SizedBox(height: 35,),
+            Flexible(
+              flex: 4,
+              child: Form(
+                key: _formKey,
+                child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: <Widget>[
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        children: <Widget>[
+                          GestureDetector(
+                            onTap: () => _fromDate(context),
+                            child: Container(
+                              width: 130,
+                              height: 40,
+                              decoration: BoxDecoration(
+                                color: Colors.green,
+                                borderRadius: BorderRadius.circular(10.0),
                               ),
-                            ),
-                            GestureDetector(
-                              onTap: () =>_toDate(context),
-                              child: Container(
-                                width: 130,
-                                height: 40,
-                                decoration: BoxDecoration(
-                                  color: Colors.green,
-                                  borderRadius: BorderRadius.circular(10.0),
-                                ),
-                                child:Column(
-                                  children: <Widget>[
-                                    SizedBox(
-                                      child: Text('End Date', style: TextStyle(fontSize: 13, fontWeight: FontWeight.bold,color: Colors.white),),
-                                    ),
-                                    Center(
-                                      child: Text(
-                                        "${selectedToDate.toLocal()}".split(' ')[0],
-                                        style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold,color: Colors.white),
-                                      ),
-                                    ),
-                                  ],
-                                ),
+                              child:Column(
+                                children: <Widget>[
 
+                                  SizedBox(
+                                    child: Text('Start Date', style: TextStyle(fontSize: 13, fontWeight: FontWeight.bold,color: Colors.white),),
+                                  ),
+                                  Center(
+                                    child: Text(
+                                      "${selectedFromDate.toLocal()}".split(' ')[0],
+                                      style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold,color: Colors.white),
+                                    ),
+                                  ),
+                                ],
                               ),
-                            ),
-                          ],
-                        ),
 
-                        SizedBox(height: 40,),
-                        Center(
-                          child: Container(
-                            width: 250,
-                            height: 50,
-                            child:   OutlineButton(
-                              borderSide: BorderSide(color: Colors.green),
-                              onPressed: () {
-                                if(d_from != null && d_to != null){
-                                  Navigator.push(context, MaterialPageRoute(builder:
-                                      (context)=>ExpensesDetailList(
-                                        dateFrom: d_from,
-                                        dateTo: d_to,
-                                    )));
-
-                                }
-                                else if(d_from == null && d_to == null){
-                                  Navigator.push(context, MaterialPageRoute(builder:
-                                      (context)=>ExpensesDetailList(dateFrom: " ",
-                                    dateTo: " ",
-                                     )));
-                                }
-                              },
-                              child: Text('Generate Report',style: TextStyle(color: Colors.green),),
                             ),
                           ),
+                          GestureDetector(
+                            onTap: () =>_toDate(context),
+                            child: Container(
+                              width: 130,
+                              height: 40,
+                              decoration: BoxDecoration(
+                                color: Colors.green,
+                                borderRadius: BorderRadius.circular(10.0),
+                              ),
+                              child:Column(
+                                children: <Widget>[
+                                  SizedBox(
+                                    child: Text('End Date', style: TextStyle(fontSize: 13, fontWeight: FontWeight.bold,color: Colors.white),),
+                                  ),
+                                  Center(
+                                    child: Text(
+                                      "${selectedToDate.toLocal()}".split(' ')[0],
+                                      style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold,color: Colors.white),
+                                    ),
+                                  ),
+                                ],
+                              ),
 
+                            ),
+                          ),
+                        ],
+                      ),
 
+                      SizedBox(height: 40,),
+                      Center(
+                        child: Container(
+                          width: 250,
+                          height: 50,
+                          child:   OutlineButton(
+                            borderSide: BorderSide(color: Colors.green),
+                            onPressed: () {
+                              if(d_from != null && d_to != null){
+                                Navigator.push(context, MaterialPageRoute(builder:
+                                    (context)=>ExpensesDetailList(
+                                      dateFrom: d_from,
+                                      dateTo: d_to,
+                                  )));
+
+                              }
+                              else if(d_from == null && d_to == null){
+                                Navigator.push(context, MaterialPageRoute(builder:
+                                    (context)=>ExpensesDetailList(dateFrom: " ",
+                                  dateTo: " ",
+                                   )));
+                              }
+                            },
+                            child: Text('Generate Report',style: TextStyle(color: Colors.green),),
+                          ),
                         ),
 
-                      ]),
-                ),
+
+                      ),
+
+                    ]),
               ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );
