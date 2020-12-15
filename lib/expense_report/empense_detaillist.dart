@@ -107,7 +107,7 @@ class _ExpensesDetailListState extends State<ExpensesDetailList> {
           Flexible(
 
             child: Container(
-              height: 120,
+              height: orientation == Orientation.portrait?size.height*0.14:size.height*0.28,
               width:  size.width,
               decoration: BoxDecoration(
                 color: Colors.green,

@@ -30,6 +30,8 @@ class _ip_configState extends State<ip_config>  with TickerProviderStateMixin{
 
   @override
   Widget build(BuildContext context) {
+    Orientation orientation = MediaQuery.of(context).orientation;
+    Size size = MediaQuery.of(context).size;
     return Scaffold(
 
       key: _scaffoldKey,
@@ -40,7 +42,7 @@ class _ip_configState extends State<ip_config>  with TickerProviderStateMixin{
           child: Column(
             children: <Widget>[
               Container(
-                height: 120,
+                height: orientation == Orientation.portrait?size.height*0.14:size.height*0.28,
                 width: MediaQuery.of(context).size.width,
                 decoration: BoxDecoration(
                   color: Colors.green,

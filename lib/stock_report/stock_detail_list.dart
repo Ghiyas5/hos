@@ -85,165 +85,205 @@ class _StockDetailListState extends State<StockDetailList> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    Orientation orientation = MediaQuery.of(context).orientation;
+    Size size = MediaQuery.of(context).size;
+    return SafeArea(
+      child: Scaffold(
 
-      body: Column(
-        children: [
-          Flexible(
-            flex: 1,
-            child: Container(
-              height: 120,
-              width: MediaQuery.of(context).size.width,
-              decoration: BoxDecoration(
-                color: Colors.green,
-                borderRadius: BorderRadius.only(topLeft: const Radius.circular(0.0),bottomLeft: const Radius.circular(100.0)),
-              ),
-              child: Padding(
-                padding: const EdgeInsets.fromLTRB(0, 0, 0, 0),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.end,
-                  children: <Widget>[
-                    Padding(
-                      padding: const EdgeInsets.all(12.0),
-                      child: SizedBox(
-                        child:  Text('Detail Report',
-                          style: TextStyle(color: Colors.white,
-                            fontSize: 22,
-                            fontWeight: FontWeight.bold,
+        body: Column(
+          children: [
+            Flexible(
+              flex: 1,
+              child: Container(
+                height: orientation == Orientation.portrait?size.height*0.14:size.height*0.28,
+                width: MediaQuery.of(context).size.width,
+                decoration: BoxDecoration(
+                  color: Colors.green,
+                  borderRadius: BorderRadius.only(topLeft: const Radius.circular(0.0),bottomLeft: const Radius.circular(100.0)),
+                ),
+                child: Padding(
+                  padding: const EdgeInsets.fromLTRB(0, 0, 0, 0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.end,
+                    children: <Widget>[
+                      Padding(
+                        padding: const EdgeInsets.all(12.0),
+                        child: SizedBox(
+                          child:  Text('Detail Report',
+                            style: TextStyle(color: Colors.white,
+                              fontSize: 22,
+                              fontWeight: FontWeight.bold,
+                            ),
+
                           ),
 
                         ),
-
                       ),
-                    ),
+
+                    ],
+                  ),
+                ),
+
+              ),
+            ),
+
+            Padding(
+              padding: const EdgeInsets.all(20.0),
+              child: SizedBox(width: 100,),
+            ),
+            Flexible(
+              flex:1,
+              child: Padding(
+                padding: const EdgeInsets.all(3.0),
+                child: Row(
+
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: <Widget>[
+                    Flexible(flex:1,child: SizedBox(child: FittedBox(fit:BoxFit.fitWidth,child: Text(('Product'),style: TextStyle(color: Colors.black),)))),
+                    Flexible(flex:1,child: SizedBox(child: FittedBox(fit:BoxFit.fitWidth,child: Text(('Open_Qty'),overflow: TextOverflow.clip,maxLines: 3,style: TextStyle(color: Colors.black,),)))),
+                    Flexible(flex:1,child: SizedBox(child: FittedBox(fit:BoxFit.fitWidth,child: Text(('Clos_Qty'), style: TextStyle(color: Colors.black),)))),
+                    Flexible(flex:1,child: SizedBox(child: FittedBox(fit:BoxFit.fitWidth,child: Text(('Loc'), style: TextStyle(color: Colors.black),)))),
+                    Flexible(flex:1,child: SizedBox(child: FittedBox(fit:BoxFit.fitWidth,child: Text(('Prod_Unit'), style: TextStyle(color: Colors.black),)))),
+                    // SizedBox(width: 25,),
 
                   ],
                 ),
               ),
-
             ),
-          ),
-          Flexible(
-            flex: 5,
-            child: Container(
-              width: MediaQuery.of(context).size.width,
-              height: MediaQuery.of(context).size.height,
-              child: isLoading
-                  ? Center(
-                child: CircularProgressIndicator(),
-              )
-                  : ListView.builder(
-                  itemCount: detail.length,
-                  itemBuilder: (BuildContext context, int index) {
-                    return Container(
-                      height: 140,
-                      width: MediaQuery.of(context).size.width,
-                      child: Padding(
-                        padding: const EdgeInsets.all(8.0),
+            Flexible(
+              flex: 4,
+              child: Container(
+                width: MediaQuery.of(context).size.width,
+                height: MediaQuery.of(context).size.height,
+                child: isLoading
+                    ? Center(
+                  child: CircularProgressIndicator(),
+                )
+                    : ListView.builder(
+                    itemCount: detail.length,
+                    itemBuilder: (BuildContext context, int index) {
+                      return Container(
+                        height: 80,
+                        width: MediaQuery.of(context).size.width,
                         child: Card(
                           child: Padding(
-                            padding: const EdgeInsets.all(8.0),
+                            padding: const EdgeInsets.all(3.0),
                             child:Column(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              mainAxisAlignment: MainAxisAlignment.center,
                               children: <Widget>[
-                                Row(
 
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                  children: <Widget>[
-                                    Flexible(
-                                      flex: 1,
-                                      child: Row(
-                                        children: <Widget>[
-                                          Flexible(flex:1,child: SizedBox(child: Text('Product'),)),
-                                          SizedBox(width: 25,),
-                                          Flexible(flex:3,child: SizedBox(child: Text((detail[index]['item_Name']),style: TextStyle(color: Colors.green,fontWeight: FontWeight.bold),))),
-                                        ],
-                                      ),
-                                    ),
-                                    // SizedBox(width: 20,),
+
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                  children: [
+
+                                    Flexible(flex:2,child: SizedBox(child: FittedBox(fit:BoxFit.fitWidth,child: Text((detail[index]['item_Name']== ''?'null':detail[index]['item_Name']), style: TextStyle(color: Colors.red,fontWeight: FontWeight.bold),)))),
+                                    Flexible(flex:2,child: SizedBox(child: FittedBox(fit:BoxFit.fitWidth,child: Text((detail[index]['opN_QTY']== ''?'null':detail[index]['opN_QTY']), style: TextStyle(color: Colors.black),)))),
+                                    Flexible(flex:2,child: SizedBox(child: FittedBox(fit:BoxFit.fitWidth,child: Text((detail[index]['closing_QTY']== ''?'null':detail[index]['closing_QTY']), style: TextStyle(color: Colors.black),)))),
+                                    Flexible(flex:2,child: SizedBox(child: FittedBox(fit:BoxFit.fitWidth,child: Text((detail[index]['loC_NAME']== ''?'null':detail[index]['loC_NAME']), style: TextStyle(color: Colors.green),)))),
+                                    Flexible(flex:2,child: SizedBox(child: FittedBox(fit:BoxFit.fitWidth,child: Text((detail[index]['iteM_BASE_UNIT']== ''?'null':detail[index]['iteM_BASE_UNIT']), style: TextStyle(color: Colors.amber),)))),
+
 
                                   ],
                                 ),
-                                Row(
-
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                  children: <Widget>[
-                                    Flexible(
-                                      flex: 1,
-                                      child: Row(
-                                        children: <Widget>[
-                                          Flexible(flex:2,child: SizedBox(child: Text('Opening Qty'),)),
-                                          SizedBox(width: 25,),
-                                          Flexible(flex:1,child: SizedBox(child: Text((detail[index]['opN_QTY']),style: TextStyle(color: Colors.black),))),
-                                        ],
-                                      ),
-                                    ),
-                                    // SizedBox(width: 20,),
-                                    Flexible(
-                                      flex: 1,
-                                      child: Row(
-                                        children: <Widget>[
-                                          Flexible(flex:1,child: SizedBox(child: Text('Close Qty'),)),
-                                          SizedBox(width: 20,),
-                                          Expanded(flex:1,child: SizedBox(child: Text((detail[index]['closing_QTY']),style: TextStyle(color: Colors.black)))),
-                                        ],
-                                      ),
-                                    )
-                                  ],
-                                ),
-                                Row(
-
-                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                  children: <Widget>[
-                                    Flexible(
-                                      flex: 1,
-                                      child: Row(
-                                        mainAxisAlignment:  MainAxisAlignment.start,
-                                        children: <Widget>[
-                                          Flexible(flex:1,child: SizedBox(child: Text('Location'),)),
-                                          SizedBox(width: 20,),
-                                          Flexible(flex:1,child: SizedBox(child: Text((detail[index]['loC_NAME']),overflow: TextOverflow.clip,maxLines: 3,style: TextStyle(color: Colors.green,)))),
-                                        ],
-                                      ),
-                                    ),
-                                    //  SizedBox(width: 20,),
-                                    Flexible(
-                                      flex: 1,
-                                      child: Row(
-                                        mainAxisAlignment:  MainAxisAlignment.start,
-                                        children: <Widget>[
-                                          Flexible(flex:2,child: SizedBox(child: Text('Product Unit'))),
-                                          SizedBox(width: 30,),
-                                          Flexible(flex:1,child: SizedBox(child: Text((detail[index]['iteM_BASE_UNIT']),style: TextStyle(color: Colors.amber,)))),
-                                          SizedBox(width: 0,),
-                                        ],
-                                      ),
-                                    )
-                                  ],
-                                )
+                                // Row(
+                                //
+                                //   mainAxisAlignment: MainAxisAlignment.start,
+                                //   children: <Widget>[
+                                //     Flexible(
+                                //       flex: 1,
+                                //       child: Row(
+                                //         children: <Widget>[
+                                //           Flexible(flex:1,child: SizedBox(child: Text('Product'),)),
+                                //           SizedBox(width: 25,),
+                                //           Flexible(flex:3,child: SizedBox(child: Text((detail[index]['item_Name']),style: TextStyle(color: Colors.green,fontWeight: FontWeight.bold),))),
+                                //         ],
+                                //       ),
+                                //     ),
+                                //     // SizedBox(width: 20,),
+                                //
+                                //   ],
+                                // ),
+                                // Row(
+                                //
+                                //   mainAxisAlignment: MainAxisAlignment.start,
+                                //   children: <Widget>[
+                                //     Flexible(
+                                //       flex: 1,
+                                //       child: Row(
+                                //         children: <Widget>[
+                                //           Flexible(flex:2,child: SizedBox(child: Text('Opening Qty'),)),
+                                //           SizedBox(width: 25,),
+                                //           Flexible(flex:1,child: SizedBox(child: Text((detail[index]['opN_QTY']),style: TextStyle(color: Colors.black),))),
+                                //         ],
+                                //       ),
+                                //     ),
+                                //     // SizedBox(width: 20,),
+                                //     Flexible(
+                                //       flex: 1,
+                                //       child: Row(
+                                //         children: <Widget>[
+                                //           Flexible(flex:1,child: SizedBox(child: Text('Close Qty'),)),
+                                //           SizedBox(width: 20,),
+                                //           Expanded(flex:1,child: SizedBox(child: Text((detail[index]['closing_QTY']),style: TextStyle(color: Colors.black)))),
+                                //         ],
+                                //       ),
+                                //     )
+                                //   ],
+                                // ),
+                                // Row(
+                                //
+                                //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                //   children: <Widget>[
+                                //     Flexible(
+                                //       flex: 1,
+                                //       child: Row(
+                                //         mainAxisAlignment:  MainAxisAlignment.start,
+                                //         children: <Widget>[
+                                //           Flexible(flex:1,child: SizedBox(child: Text('Location'),)),
+                                //           SizedBox(width: 20,),
+                                //           Flexible(flex:1,child: SizedBox(child: Text((detail[index]['loC_NAME']),overflow: TextOverflow.clip,maxLines: 3,style: TextStyle(color: Colors.green,)))),
+                                //         ],
+                                //       ),
+                                //     ),
+                                //     //  SizedBox(width: 20,),
+                                //     Flexible(
+                                //       flex: 1,
+                                //       child: Row(
+                                //         mainAxisAlignment:  MainAxisAlignment.start,
+                                //         children: <Widget>[
+                                //           Flexible(flex:2,child: SizedBox(child: Text('Product Unit'))),
+                                //           SizedBox(width: 30,),
+                                //           Flexible(flex:1,child: SizedBox(child: Text((detail[index]['iteM_BASE_UNIT']),style: TextStyle(color: Colors.amber,)))),
+                                //           SizedBox(width: 0,),
+                                //         ],
+                                //       ),
+                                //     )
+                                //   ],
+                                // )
                               ],
                             )
                             ,
                             // child: Text((detail[index]['gdN_DATE']), style: TextStyle(fontSize: 22.0),),
                           ),
                         ),
-                      ),
-                    );
+                      );
 
 
-                    // return ListTile(
-                    //   contentPadding: EdgeInsets.all(10.0),
-                    //   title: new Text(detail[index]['stat_Day']),
-                    //
-                    // );
-                  }),
+                      // return ListTile(
+                      //   contentPadding: EdgeInsets.all(10.0),
+                      //   title: new Text(detail[index]['stat_Day']),
+                      //
+                      // );
+                    }),
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
+
+
       ),
-
-
     );
   }
 }

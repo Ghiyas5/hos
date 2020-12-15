@@ -46,124 +46,124 @@ class _StockReportState extends State<StockReport> {
 
   @override
   Widget build(BuildContext context) {
+    Orientation orientation = MediaQuery.of(context).orientation;
+    Size size = MediaQuery.of(context).size;
     return  Scaffold(
 
-      body: SafeArea(
-        child: Column(
-          children: [
-            Flexible(
-              flex: 1,
-              child: Container(
-                height: MediaQuery.of(context).size.height*0.2,
-                width: MediaQuery.of(context).size.width,
-                decoration: BoxDecoration(
-                  color: Colors.green,
-                  borderRadius: BorderRadius.only(topLeft: const Radius.circular(0.0),bottomLeft: const Radius.circular(100.0)),
-                ),
-                child: Padding(
-                  padding: const EdgeInsets.fromLTRB(0, 0, 0, 0),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.end,
-                    children: <Widget>[
-                      Padding(
-                        padding: const EdgeInsets.all(12.0),
-                        child: SizedBox(
-                          child:  Text('Stock Report',
-                            style: TextStyle(color: Colors.white,
-                              fontSize: 22,
-                              fontWeight: FontWeight.bold,
-                            ),
-
+      body: Column(
+        children: [
+          Flexible(
+            flex: 1,
+            child: Container(
+              height: orientation == Orientation.portrait?size.height*0.14:size.height*0.28,
+              width: MediaQuery.of(context).size.width,
+              decoration: BoxDecoration(
+                color: Colors.green,
+                borderRadius: BorderRadius.only(topLeft: const Radius.circular(0.0),bottomLeft: const Radius.circular(100.0)),
+              ),
+              child: Padding(
+                padding: const EdgeInsets.fromLTRB(0, 0, 0, 0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.end,
+                  children: <Widget>[
+                    Padding(
+                      padding: const EdgeInsets.all(12.0),
+                      child: SizedBox(
+                        child:  Text('Stock Report',
+                          style: TextStyle(color: Colors.white,
+                            fontSize: 22,
+                            fontWeight: FontWeight.bold,
                           ),
 
                         ),
-                      ),
 
-                    ],
-                  ),
+                      ),
+                    ),
+
+                  ],
                 ),
-
               ),
+
             ),
-            SizedBox(height: 25,),
-            Flexible(
-              flex: 4,
-              child: Container(
-                padding: EdgeInsets.all(15.0),
-                child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
-                    children: <Widget>[
-                      SizedBox(height: 20,),
-                      SizedBox(child: Text('Product',style: TextStyle(color: Colors.green),),),
-                      SearchableDropdown(
-                        isExpanded: true,
-                        isCaseSensitiveSearch: false,
-                        searchHint: new Text(
-                          'Select Product ',
-                          style: new TextStyle(fontSize: 20),
-                        ),
-                        value: val,
-                        onChanged: (String value) {
-
-                          itemlist.map((e){
-                            if(e['iteM_NAME'] == value){
-                              setState(() {
-                                val = value;
-                                selectItem_index = itemlist.indexOf(e);
-                              });
-                            }
-                          });
-
-                          print(val);
-                          item_cod = value;
-                          Toast.show( item_cod, context, duration: Toast.LENGTH_SHORT, gravity:  Toast.BOTTOM);
-                        },
-                        // required: false,
-                        hint:Text('Choose Product'),
-                        items: itemlist.map((item) {
-                          return new DropdownMenuItem(
-                            child: new Text(item['iteM_NAME']),
-                            value: item['iteM_CODE'].toString(),
-
-                          );
-                        }).toList(),
-
+          ),
+          SizedBox(height: 25,),
+          Flexible(
+            flex: 4,
+            child: Container(
+              padding: EdgeInsets.all(15.0),
+              child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: <Widget>[
+                    SizedBox(height: 20,),
+                    SizedBox(child: Text('Product',style: TextStyle(color: Colors.green),),),
+                    SearchableDropdown(
+                      isExpanded: true,
+                      isCaseSensitiveSearch: false,
+                      searchHint: new Text(
+                        'Select Product ',
+                        style: new TextStyle(fontSize: 20),
                       ),
-                      SizedBox(height: 40,),
-                      Center(
-                        child: Container(
-                          width: 250,
-                          height: 50,
-                          child:   OutlineButton(
-                            borderSide: BorderSide(color: Colors.green),
-                            onPressed: () {
-                               if(
-                                  item_cod == null){
-                                Navigator.push(context, MaterialPageRoute(builder:
-                                    (context)=>StockDetailList(
-                                  itemCode:  " ",
-                                   )));
-                              }
-                               else  if(
-                               item_cod != null){
-                                 Navigator.push(context, MaterialPageRoute(builder:
-                                     (context)=>StockDetailList(
-                                   itemCode:  item_cod,
+                      value: val,
+                      onChanged: (String value) {
+
+                        itemlist.map((e){
+                          if(e['iteM_NAME'] == value){
+                            setState(() {
+                              val = value;
+                              selectItem_index = itemlist.indexOf(e);
+                            });
+                          }
+                        });
+
+                        print(val);
+                        item_cod = value;
+                        Toast.show( item_cod, context, duration: Toast.LENGTH_SHORT, gravity:  Toast.BOTTOM);
+                      },
+                      // required: false,
+                      hint:Text('Choose Product'),
+                      items: itemlist.map((item) {
+                        return new DropdownMenuItem(
+                          child: new Text(item['iteM_NAME']),
+                          value: item['iteM_CODE'].toString(),
+
+                        );
+                      }).toList(),
+
+                    ),
+                    SizedBox(height: 40,),
+                    Center(
+                      child: Container(
+                        width: 250,
+                        height: 50,
+                        child:   OutlineButton(
+                          borderSide: BorderSide(color: Colors.green),
+                          onPressed: () {
+                             if(
+                                item_cod == null){
+                              Navigator.push(context, MaterialPageRoute(builder:
+                                  (context)=>StockDetailList(
+                                itemCode:  " ",
                                  )));
-                               }
+                            }
+                             else  if(
+                             item_cod != null){
+                               Navigator.push(context, MaterialPageRoute(builder:
+                                   (context)=>StockDetailList(
+                                 itemCode:  item_cod,
+                               )));
+                             }
 
-                            },
-                            child: Text('Generate Report',style: TextStyle(color: Colors.green),),
-                          ),
+                          },
+                          child: Text('Generate Report',style: TextStyle(color: Colors.green),),
                         ),
                       ),
+                    ),
 
-                    ]),
-              ),
+                  ]),
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }
